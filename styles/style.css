@@ -1,0 +1,8 @@
+.switch_button:checked {
+    background-color: #f05425;
+}
+
+.switch_button {
+    border-radius: 50px;
+    border-color: #f05425;
+}
