@@ -6,6 +6,7 @@
 
 GtkWidget *window;
 GtkWidget *switch_button;
+GtkWidget *lbl_status;
 pthread_mutex_t switch_mutex = PTHREAD_MUTEX_INITIALIZER;
 bool switch_active = false;
 
@@ -14,21 +15,30 @@ bool check_connection_status()
     int result = system("warp-cli status | grep \"Status update: Connected\" > /dev/null 2>&1");
     if (WIFEXITED(result) && WEXITSTATUS(result) == 0)
     {
+        gtk_label_set_text(GTK_LABEL(lbl_status), "CONNECTED");
         return true;
     }
     else
     {
+        gtk_label_set_text(GTK_LABEL(lbl_status), "DISCONNECTED");
         return false;
     }
 }
 
-void set_switch_state(bool active)
+void switch_button_toggled(GtkWidget *widget, gpointer data)
 {
+    gboolean active = gtk_switch_get_active(GTK_SWITCH(widget));
     pthread_mutex_lock(&switch_mutex);
-    if (switch_active != active)
+    switch_active = active;
+    if (switch_active)
     {
-        switch_active = active;
-        gtk_switch_set_active(GTK_SWITCH(switch_button), switch_active);
+        system("warp-cli connect > /dev/null 2>&1");
+        gtk_label_set_text(GTK_LABEL(lbl_status), "CONNECTED");
+    }
+    else
+    {
+        system("warp-cli disconnect > /dev/null 2>&1");
+        gtk_label_set_text(GTK_LABEL(lbl_status), "DISCONNECTED");
     }
     pthread_mutex_unlock(&switch_mutex);
 }
@@ -56,9 +66,13 @@ int main(int argc, char *argv[])
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
     g_signal_connect(window, "destroy", G_CALLBACK(quit_program), NULL);
 
+    // Get the status label object
+    lbl_status = GTK_WIDGET(gtk_builder_get_object(builder, "lbl_status"));
+
     // Get the switch button object
     switch_button = GTK_WIDGET(gtk_builder_get_object(builder, "switch_button"));
-    set_switch_state(check_connection_status());
+    gtk_switch_set_active(GTK_SWITCH(switch_button), check_connection_status());
+    g_signal_connect(switch_button, "notify::active", G_CALLBACK(switch_button_toggled), NULL);
 
     // Load the CSS file
     GtkCssProvider *css_provider = gtk_css_provider_new();
