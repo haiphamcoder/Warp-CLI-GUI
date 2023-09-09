@@ -62,8 +62,20 @@ int main(int argc, char *argv[])
     // Create the builder
     GtkBuilder *builder = gtk_builder_new();
 
+    // Get current path of file execute
+    char *dir_path = malloc(1024);
+    readlink("/proc/self/exe", dir_path, 1024);
+    char *last_slash = strrchr(dir_path, '/');
+    *last_slash = '\0';
+    char *glade_file_path = malloc(strlen(dir_path) + strlen("/ui.glade") + 1);
+    char *css_file_path = malloc(strlen(dir_path) + strlen("/styles/style.css") + 1);
+    strcpy(glade_file_path, dir_path);
+    strcpy(css_file_path, dir_path);
+    strcat(glade_file_path, "/ui.glade");
+    strcat(css_file_path, "/styles/style.css");
+
     // Load the UI file
-    gtk_builder_add_from_file(builder, "ui.glade", NULL);
+    gtk_builder_add_from_file(builder, glade_file_path, NULL);
 
     // Connect signal handlers to the constructed widgets.
     gtk_builder_connect_signals(builder, NULL);
@@ -86,7 +98,7 @@ int main(int argc, char *argv[])
     GdkDisplay *display = gdk_display_get_default();
     GdkScreen *screen = gdk_display_get_default_screen(display);
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-    gtk_css_provider_load_from_path(css_provider, "styles/style.css", NULL);
+    gtk_css_provider_load_from_path(css_provider, css_file_path, NULL);
     g_object_unref(css_provider);
 
     // Destroy the builder

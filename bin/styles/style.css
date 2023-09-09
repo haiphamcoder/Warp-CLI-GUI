@@ -1,0 +1,20 @@
+.switch_button:checked {
+    background-image: linear-gradient(to right, #F26437 0%, #E93766 100%);
+}
+
+.switch_button {
+    border-radius: 50px;
+    padding: 5px;
+    min-width: 100px;
+    min-height: 52px;
+    border-width: 0px;
+}
+
+* {
+    outline-width: 0px;
+    outline: none;
+}
+
+.private {
+    color: #f05425;
+}
