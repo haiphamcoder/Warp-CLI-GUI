@@ -1,8 +1,18 @@
 .switch_button:checked {
-    background-color: #f05425;
+    background-image: linear-gradient(to right, #F26437 0%, #E93766 100%);
 }
 
 .switch_button {
     border-radius: 50px;
-    border-color: #f05425;
+    padding: 5px;
+    min-width: 100px;
+    min-height: 52px;
+    border-width: 0px;
+}
+
+.lbl_warp {
+    color: #f05425;
+    font-size: 48pt;
+    font-family: 'Liberation Sans Bold';
+    font-weight: bold;
 }

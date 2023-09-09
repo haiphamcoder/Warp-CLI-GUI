@@ -13,7 +13,6 @@
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="default_width">400</property>
-    <property name="default_height">500</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="icon">assets/warp_gui.png</property>
     <property name="gravity">center</property>
@@ -29,16 +28,22 @@
         <property name="margin_top">20</property>
         <property name="margin_bottom">20</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="lbl_warp">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">WARP+</property>
+            <property name="margin_top">10</property>
+            <property name="label" translatable="yes">WARP</property>
+            <property name="justify">fill</property>
+            <property name="ellipsize">middle</property>
+            <property name="single_line_mode">True</property>
             <attributes>
               <attribute name="font-desc" value="Liberation Sans Bold 48"/>
               <attribute name="foreground" value="#f0f054542525"/>
             </attributes>
+            <style>
+              <class name="lbl_warp"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -55,8 +60,8 @@
             <property name="double_buffered">False</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
-            <property name="margin_top">50</property>
-            <property name="margin_bottom">50</property>
+            <property name="margin_top">60</property>
+            <property name="margin_bottom">70</property>
             <style>
               <class name="switch_button"/>
             </style>
@@ -72,6 +77,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">CONNECTED</property>
+            <property name="single_line_mode">True</property>
             <attributes>
               <attribute name="font-desc" value="Liberation Sans Bold 18"/>
               <attribute name="foreground" value="#f0f054542525"/>
@@ -87,9 +93,12 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">5</property>
+            <property name="margin_bottom">10</property>
             <property name="label" translatable="yes">Your Internet is private</property>
+            <property name="single_line_mode">True</property>
             <attributes>
-              <attribute name="font-desc" value="Liberation Sans Bold 12"/>
+              <attribute name="font-desc" value="Liberation Sans Bold 14"/>
               <attribute name="foreground" value="#22221e1e6868"/>
             </attributes>
           </object>
@@ -109,7 +118,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">1.1.1.1 
+                <property name="label" translatable="yes">WARP
 by Cloudflare</property>
                 <attributes>
                   <attribute name="font-desc" value="Liberation Sans 12"/>
@@ -151,6 +160,8 @@ by Cloudflare</property>
             <property name="height_request">2</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
           </object>
           <packing>
             <property name="expand">False</property>
