@@ -10,9 +10,11 @@
     border-width: 0px;
 }
 
-.lbl_warp {
+* {
+    outline-width: 0px;
+    outline: none;
+}
+
+.private {
     color: #f05425;
-    font-size: 48pt;
-    font-family: 'Liberation Sans Bold';
-    font-weight: bold;
 }

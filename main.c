@@ -7,21 +7,25 @@
 GtkWidget *window;
 GtkWidget *switch_button;
 GtkWidget *lbl_status;
+GtkWidget *lbl_internet_status;
 pthread_mutex_t switch_mutex = PTHREAD_MUTEX_INITIALIZER;
 bool switch_active = false;
+pthread_t thread_id;
 
-bool check_connection_status()
+void check_connection_status()
 {
     int result = system("warp-cli status | grep \"Status update: Connected\" > /dev/null 2>&1");
     if (WIFEXITED(result) && WEXITSTATUS(result) == 0)
     {
-        gtk_label_set_text(GTK_LABEL(lbl_status), "CONNECTED");
-        return true;
+        gtk_switch_set_active(GTK_SWITCH(switch_button), true);
+        gtk_label_set_markup(GTK_LABEL(lbl_status), "<span font=\"Liberation Sans Bold 18\" color=\"#f05425\">CONNECTED</span>");
+        gtk_label_set_markup(GTK_LABEL(lbl_internet_status), "<span font=\"Liberation Sans Bold 14\" color=\"#221e68\">Your Internet is <span color=\"#f05425\">private</span></span>");
     }
     else
     {
-        gtk_label_set_text(GTK_LABEL(lbl_status), "DISCONNECTED");
-        return false;
+        gtk_switch_set_active(GTK_SWITCH(switch_button), false);
+        gtk_label_set_markup(GTK_LABEL(lbl_status), "<span font=\"Liberation Sans Bold 18\" color=\"#f05425\">DISCONNECTED</span>");
+        gtk_label_set_markup(GTK_LABEL(lbl_internet_status), "<span font=\"Liberation Sans Bold 14\" color=\"#221e68\">Your Internet is not private</span>");
     }
 }
 
@@ -33,12 +37,14 @@ void switch_button_toggled(GtkWidget *widget, gpointer data)
     if (switch_active)
     {
         system("warp-cli connect > /dev/null 2>&1");
-        gtk_label_set_text(GTK_LABEL(lbl_status), "CONNECTED");
+        gtk_label_set_markup(GTK_LABEL(lbl_status), "<span font=\"Liberation Sans Bold 18\" color=\"#f05425\">CONNECTED</span>");
+        gtk_label_set_markup(GTK_LABEL(lbl_internet_status), "<span font=\"Liberation Sans Bold 14\" color=\"#221e68\">Your Internet is <span color=\"#f05425\">private</span></span>");
     }
     else
     {
         system("warp-cli disconnect > /dev/null 2>&1");
-        gtk_label_set_text(GTK_LABEL(lbl_status), "DISCONNECTED");
+        gtk_label_set_markup(GTK_LABEL(lbl_status), "<span font=\"Liberation Sans Bold 18\" color=\"#f05425\">DISCONNECTED</span>");
+        gtk_label_set_markup(GTK_LABEL(lbl_internet_status), "<span font=\"Liberation Sans Bold 14\" color=\"#221e68\">Your Internet is not private</span>");
     }
     pthread_mutex_unlock(&switch_mutex);
 }
@@ -68,10 +74,11 @@ int main(int argc, char *argv[])
 
     // Get the status label object
     lbl_status = GTK_WIDGET(gtk_builder_get_object(builder, "lbl_status"));
+    lbl_internet_status = GTK_WIDGET(gtk_builder_get_object(builder, "lbl_internet_status"));
 
     // Get the switch button object
     switch_button = GTK_WIDGET(gtk_builder_get_object(builder, "switch_button"));
-    gtk_switch_set_active(GTK_SWITCH(switch_button), check_connection_status());
+    check_connection_status();
     g_signal_connect(switch_button, "notify::active", G_CALLBACK(switch_button_toggled), NULL);
 
     // Load the CSS file

@@ -77,11 +77,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">CONNECTED</property>
+            <property name="use_markup">True</property>
             <property name="single_line_mode">True</property>
-            <attributes>
-              <attribute name="font-desc" value="Liberation Sans Bold 18"/>
-              <attribute name="foreground" value="#f0f054542525"/>
-            </attributes>
+            <style>
+              <class name="lbl_status"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -90,17 +90,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="lbl_internet_status">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_top">5</property>
             <property name="margin_bottom">10</property>
             <property name="label" translatable="yes">Your Internet is private</property>
+            <property name="use_markup">True</property>
             <property name="single_line_mode">True</property>
-            <attributes>
-              <attribute name="font-desc" value="Liberation Sans Bold 14"/>
-              <attribute name="foreground" value="#22221e1e6868"/>
-            </attributes>
+            <style>
+              <class name="lbl_internet_status"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -122,7 +122,8 @@
 by Cloudflare</property>
                 <attributes>
                   <attribute name="font-desc" value="Liberation Sans 12"/>
-                  <attribute name="foreground" value="#2e2e34343636"/>
+                  <attribute name="style" value="italic"/>
+                  <attribute name="foreground" value="#88888a8a8585"/>
                 </attributes>
               </object>
               <packing>
